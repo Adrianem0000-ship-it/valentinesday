@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Para kay Angelo</title>
+	<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital@0;1&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+	<style>
+		body {
+			margin: 0;
+			height: 100vh;
+			background: radial-gradient(circle at center, #7d0a1a 0%, #4a0000 50%, #1a0000 100%);
+			overflow: hidden;
+			font-family: 'Poppins', sans-serif;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.main-container {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			width: 100%;
+			height: 100%;
+			position: relative;
+		}
+
+		/* 1. TEXT ANIMATION */
+		.text-header {
+			text-align: center;
+			z-index: 100;
+			position: absolute;
+			top: 50%; 
+			transform: translateY(-50%);
+			opacity: 0;
+			animation: initialFade 2s 0.5s forwards, moveUp 2s 2.5s forwards;
+		}
+
+		.text-header h2 { 
+			font-size: 0.85rem; 
+			margin: 0; 
+			color: #ff4d6d; 
+			letter-spacing: 3px; 
+			text-transform: uppercase;
+		}
+
+		.target-name { 
+			font-size: 1.1rem; 
+			font-weight: 400;
+			margin-top: 5px; 
+			color: #ffffff; 
+		}
+
+		@keyframes initialFade { from { opacity: 0; } to { opacity: 1; } }
+		@keyframes moveUp { to { top: 10%; transform: translateY(0); } }
+
+		/* 2. FLOWER SYSTEM */
+		.flower-wrap {
+			position: absolute;
+			top: 55%; 
+			left: 50%;
+			transform: translateX(-50%);
+			width: 4px;
+			height: 0;
+			background: linear-gradient(to top, #0f2d1e, #2d6a4f);
+			animation: grow 2.5s 4.5s ease-out forwards, plantSway 4s infinite ease-in-out;
+			transform-origin: bottom center;
+		}
+
+		.branch {
+			position: absolute;
+			width: 4px;
+			background: #2d6a4f;
+			transform-origin: bottom center;
+			opacity: 0;
+			animation: fadeInBranch 1s 6.5s forwards;
+		}
+
+		.branch.center-top { height: 50px; bottom: 100%; left: 0px; }
+		.branch.left-side { height: 65px; bottom: 45px; left: 0; transform: rotate(-40deg); }
+		.branch.right-side { height: 65px; bottom: 30px; right: 0; transform: rotate(40deg); }
+
+		.flower-head {
+			position: absolute;
+			top: 0;
+			left: 50%;
+			transform: translate(-50%, -100%) scale(0);
+			animation: bloom 2s 6.5s forwards, flowerAlive 3s infinite alternate ease-in-out;
+		}
+
+		.flower-head.main { width: 130px; height: 130px; }
+		.flower-head.small-l { width: 85px; height: 85px; }
+		.flower-head.small-r { width: 85px; height: 85px; }
+
+		.petal {
+			position: absolute;
+			width: 45%;
+			height: 75%;
+			background: linear-gradient(to top, #d90429, #ef233c, #ffb7c5);
+			border-radius: 50% 50% 20% 20%;
+			left: 50%;
+			top: 50%;
+			transform-origin: bottom center;
+			box-shadow: inset 0 0 8px rgba(0,0,0,0.3);
+		}
+
+		.p1, .p2, .p3, .p4, .p5, .p6, .p7, .p8 { position: absolute; left: 50%; top: 50%; transform-origin: bottom center; }
+		.p1 { transform: translate(-50%, -100%) rotate(0deg); }
+		.p2 { transform: translate(-50%, -100%) rotate(45deg); }
+		.p3 { transform: translate(-50%, -100%) rotate(90deg); }
+		.p4 { transform: translate(-50%, -100%) rotate(135deg); }
+		.p5 { transform: translate(-50%, -100%) rotate(180deg); }
+		.p6 { transform: translate(-50%, -100%) rotate(225deg); }
+		.p7 { transform: translate(-50%, -100%) rotate(270deg); }
+		.p8 { transform: translate(-50%, -100%) rotate(315deg); }
+
+		.f-center {
+			position: absolute;
+			left: 50%; top: 50%;
+			transform: translate(-50%, -50%);
+			width: 40%; height: 40%;
+			background: radial-gradient(circle, #fff3b0, #ffcc00);
+			border-radius: 50%;
+			z-index: 10;
+			cursor: pointer;
+		}
+
+		/* 3. PAPER NOTE */
+		.paper-note {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%) scale(0);
+			width: 260px;
+			padding: 20px;
+			background: #fdfae5;
+			color: #2b0000;
+			text-align: center;
+			font-family: 'Playfair Display', serif;
+			font-size: 0.95rem;
+			line-height: 1.6rem;
+			box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+			border-radius: 4px;
+			z-index: 300;
+			opacity: 0;
+			transition: all 0.5s ease;
+			pointer-events: none;
+		}
+
+		.paper-note.active {
+			transform: translate(-50%, -50%) scale(1);
+			opacity: 1;
+			pointer-events: all;
+		}
+
+		/* 4. PHOTO POPUP (SMALLER) */
+		.photo-container {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%) scale(0);
+			width: 200px; /* Smaller width */
+			padding: 8px 8px 30px 8px;
+			background: white;
+			box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+			z-index: 305;
+			opacity: 0;
+			transition: all 0.5s ease;
+			pointer-events: none;
+		}
+
+		.photo-container img {
+			width: 100%;
+			height: auto;
+			display: block;
+			border: 1px solid #eee;
+		}
+
+		.photo-container.active {
+			transform: translate(-50%, -50%) scale(1);
+			opacity: 1;
+			pointer-events: all;
+		}
+
+		/* CLOSE BUTTON (X) */
+		.close-btn {
+			position: absolute;
+			top: -10px;
+			right: -10px;
+			width: 25px;
+			height: 25px;
+			background: #ff4d6d;
+			color: white;
+			border-radius: 50%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: 14px;
+			cursor: pointer;
+			font-weight: bold;
+			box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+		}
+
+		.sender-name { 
+			position: absolute;
+			bottom: 8%;
+			font-size: 0.85rem; 
+			color: #ffd700; 
+			opacity: 0;
+			animation: fadeIn 2s 8.5s forwards; 
+		}
+
+		@keyframes grow { from { height: 0; } to { height: 160px; } }
+		@keyframes fadeInBranch { to { opacity: 1; } }
+		@keyframes bloom { to { transform: translate(-50%, -100%) scale(1); } }
+		@keyframes plantSway { 0%, 100% { transform: rotate(-1deg); } 50% { transform: rotate(1deg); } }
+		@keyframes flowerAlive { from { transform: translate(-50%, -100%) scale(1); } to { transform: translate(-50%, -100%) scale(1.03); } }
+		@keyframes fadeIn { to { opacity: 1; } }
+
+		.heart {
+			position: absolute;
+			color: rgba(255, 77, 109, 0.4);
+			font-size: 15px;
+			z-index: 1;
+			animation: flyUp 6s infinite linear;
+		}
+
+		@keyframes flyUp {
+			0% { transform: translateY(105vh) rotate(0deg); opacity: 0; }
+			20% { opacity: 0.5; }
+			100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+		}
+	</style>
+</head>
+<body>
+
+	<div class="main-container">
+		<div id="messagePaper" class="paper-note">
+			<div class="close-btn" onclick="closeAll()">X</div>
+			"Today, I want to remind you that I am grateful to have you in my life. You always make my day happier. Thank you mahal for giving me comfort and peace when I feel lost. I love you!"
+		</div>
+
+		<div id="photoFrame" class="photo-container">
+			<div class="close-btn" onclick="closeAll()">X</div>
+			<img src="IMG_8604.png" alt="Our Picture">
+			<p style="margin: 8px 0 0 0; font-family: 'Great Vibes', cursive; font-size: 1.2rem; color: #333; text-align: center;">Us ❤️</p>
+		</div>
+
+		<div class="text-header">
+			<h2>Happy Valentines Day</h2>
+			<div class="target-name">Mahal ko! Angelo Asingal 🥰</div>
+		</div>
+
+		<div class="flower-wrap">
+			<div class="branch center-top">
+				<div class="flower-head main">
+					<div class="f-center" onclick="toggleMessage()"></div>
+					<div class="petal p1"></div><div class="petal p2"></div>
+					<div class="petal p3"></div><div class="petal p4"></div>
+					<div class="petal p5"></div><div class="petal p6"></div>
+					<div class="petal p7"></div><div class="petal p8"></div>
+				</div>
+			</div>
+			<div class="branch left-side">
+				<div class="flower-head small-l">
+					<div class="f-center" onclick="togglePhoto()"></div>
+					<div class="petal p1"></div><div class="petal p2"></div>
+					<div class="petal p3"></div><div class="petal p4"></div>
+					<div class="petal p5"></div><div class="petal p6"></div>
+					<div class="petal p7"></div><div class="petal p8"></div>
+				</div>
+			</div>
+			<div class="branch right-side">
+				<div class="flower-head small-r">
+					<div class="f-center" onclick="togglePhoto()"></div>
+					<div class="petal p1"></div><div class="petal p2"></div>
+					<div class="petal p3"></div><div class="petal p4"></div>
+					<div class="petal p5"></div><div class="petal p6"></div>
+					<div class="petal p7"></div><div class="petal p8"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="sender-name">I love you everyday! ~ Addy</div>
+	</div>
+
+	<script>
+		function toggleMessage() {
+			closeAll();
+			document.getElementById('messagePaper').classList.add('active');
+		}
+
+		function togglePhoto() {
+			closeAll();
+			document.getElementById('photoFrame').classList.add('active');
+		}
+
+		function closeAll() {
+			document.getElementById('messagePaper').classList.remove('active');
+			document.getElementById('photoFrame').classList.remove('active');
+		}
+
+		function createParticle() {
+			const heart = document.createElement('div');
+			heart.className = 'heart';
+			heart.innerHTML = '❤️';
+			heart.style.left = Math.random() * 100 + 'vw';
+			heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+			document.body.appendChild(heart);
+			setTimeout(() => heart.remove(), 6000);
+		}
+		setInterval(createParticle, 500);
+	</script>
+</body>
+</html>
