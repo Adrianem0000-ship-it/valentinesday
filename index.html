@@ -75,7 +75,7 @@
 			top: 0;
 			left: 50%;
 			transform: translate(-50%, -100%) scale(0);
-			animation: bloom 2s 6.5s forwards, flowerAlive 3s infinite alternate ease-in-out;
+			animation: bloom 2s 6.5s forwards;
 		}
 
 		.flower-head.main { width: 130px; height: 130px; }
@@ -111,9 +111,17 @@
 			border-radius: 50%;
 			z-index: 10;
 			cursor: pointer;
+            /* HEARTBEAT ANIMATION */
+            animation: heartBeat 1.5s infinite ease-in-out;
 		}
 
-		/* POPUP STYLES (LETTER & PHOTO) */
+        @keyframes heartBeat {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.15); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+		/* POPUP STYLES */
 		.popup-card {
 			position: absolute;
 			top: 50%;
@@ -127,7 +135,6 @@
 
 		.popup-card.active { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: all; }
 
-		/* THE LETTER */
 		.paper-note {
 			width: 260px;
 			padding: 20px;
@@ -141,13 +148,13 @@
 			border-radius: 4px;
 		}
 
-		/* THE PHOTO */
 		.photo-frame {
 			width: 200px;
 			padding: 8px 8px 30px 8px;
 			background: white;
 			box-shadow: 0 10px 50px rgba(0,0,0,0.8);
 		}
+        /* IMAGE FILE IS HERE */
 		.photo-frame img { width: 100%; height: auto; border-radius: 2px; }
 
 		.close-btn {
@@ -175,8 +182,22 @@
 		@keyframes plantSway { 0%, 100% { transform: rotate(-1deg); } 50% { transform: rotate(1deg); } }
 		@keyframes fadeIn { to { opacity: 1; } }
 
-		.heart { position: absolute; color: rgba(255, 77, 109, 0.4); font-size: 15px; z-index: 1; animation: flyUp 6s infinite linear; }
-		@keyframes flyUp { 0% { transform: translateY(105vh); opacity: 0; } 100% { transform: translateY(-10vh); opacity: 0; } }
+        /* HEART ANIMATION (DIES IN THE MIDDLE) */
+		.heart { 
+            position: absolute; 
+            color: rgba(255, 77, 109, 0.7); 
+            font-size: 15px; 
+            z-index: 1; 
+            animation: flyUp var(--d) linear infinite;
+            top: 100vh;
+        }
+
+		@keyframes flyUp { 
+            0% { transform: translateY(0); opacity: 0; } 
+            15% { opacity: 1; }
+            50% { opacity: 0; transform: translateY(-50vh); } 
+            100% { transform: translateY(-100vh); opacity: 0; } 
+        }
 	</style>
 </head>
 <body>
@@ -192,7 +213,7 @@
 		<div id="photoPopup" class="popup-card">
 			<div class="close-btn" onclick="closeAll()">X</div>
 			<div class="photo-frame">
-				<img src="IMG_4091.jpeg" alt="Us">
+                <img src="IMG_4091.jpeg" alt="Us">
 				<p style="margin: 8px 0 0 0; font-family: 'Great Vibes', cursive; font-size: 1.2rem; color: #333; text-align: center;">Us ❤️</p>
 			</div>
 		</div>
@@ -203,9 +224,24 @@
 		</div>
 
 		<div class="flower-wrap">
-			<div class="branch center-top"><div class="flower-head main"><div class="f-center" onclick="showLetter()"></div><div class="petal p1"></div><div class="petal p2"></div><div class="petal p3"></div><div class="petal p4"></div><div class="petal p5"></div><div class="petal p6"></div><div class="petal p7"></div><div class="petal p8"></div></div></div>
-			<div class="branch left-side"><div class="flower-head small-l"><div class="f-center" onclick="showPhoto()"></div><div class="petal p1"></div><div class="petal p2"></div><div class="petal p3"></div><div class="petal p4"></div><div class="petal p5"></div><div class="petal p6"></div><div class="petal p7"></div><div class="petal p8"></div></div></div>
-			<div class="branch right-side"><div class="flower-head small-r"><div class="f-center" onclick="showPhoto()"></div><div class="petal p1"></div><div class="petal p2"></div><div class="petal p3"></div><div class="petal p4"></div><div class="petal p5"></div><div class="petal p6"></div><div class="petal p7"></div><div class="petal p8"></div></div></div>
+			<div class="branch center-top">
+                <div class="flower-head main">
+                    <div class="f-center" onclick="showLetter()"></div>
+                    <div class="petal p1"></div><div class="petal p2"></div><div class="petal p3"></div><div class="petal p4"></div><div class="petal p5"></div><div class="petal p6"></div><div class="petal p7"></div><div class="petal p8"></div>
+                </div>
+            </div>
+			<div class="branch left-side">
+                <div class="flower-head small-l">
+                    <div class="f-center" onclick="showPhoto()"></div>
+                    <div class="petal p1"></div><div class="petal p2"></div><div class="petal p3"></div><div class="petal p4"></div><div class="petal p5"></div><div class="petal p6"></div><div class="petal p7"></div><div class="petal p8"></div>
+                </div>
+            </div>
+			<div class="branch right-side">
+                <div class="flower-head small-r">
+                    <div class="f-center" onclick="showPhoto()"></div>
+                    <div class="petal p1"></div><div class="petal p2"></div><div class="petal p3"></div><div class="petal p4"></div><div class="petal p5"></div><div class="petal p6"></div><div class="petal p7"></div><div class="petal p8"></div>
+                </div>
+            </div>
 		</div>
 
 		<div class="sender-name">I love you everyday! ~ Addy</div>
@@ -232,11 +268,12 @@
 			heart.className = 'heart';
 			heart.innerHTML = '❤️';
 			heart.style.left = Math.random() * 100 + 'vw';
-			heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            const duration = (Math.random() * 3 + 4);
+			heart.style.setProperty('--d', duration + 's');
 			document.body.appendChild(heart);
-			setTimeout(() => heart.remove(), 6000);
+			setTimeout(() => heart.remove(), duration * 1000);
 		}
-		setInterval(createParticle, 500);
+		setInterval(createParticle, 400);
 	</script>
 </body>
 </html>
